@@ -17,7 +17,7 @@ total_months = 0
 total_net = 0
 changes = []
 dates = []
-previous_profit_loss = 0
+previous_profit_loss = None
 greatest_increase = ["",0]
 greatest_decrease = ["",0]
 # Add more variables to track other necessary financial data
@@ -30,37 +30,41 @@ with open(file_to_load, mode="r") as financial_data:
     header = next(reader)
 
     # Extract first row to avoid appending to net_change_list
-    first_row = next(reader)
-    total_months =+ 1
-    total_net += int(first_row[1])
-    previous_profit_loss = int(first_row[1])
 
     # Process each row of data
     for row in reader:
+        print(f"Processing row: {row}")
+
+        date = row [0]
+        profit_loss = int(row[1])
         
         # Track the total
-        total_months =+ 1
-        total_net += int(row[1])
+        total_months += 1
+        print(f"Total Months updated to: {total_months}")
+        total_net += profit_loss
 
         # Track the net change
-        change = int(row[1]) - previous_profit_loss
-        previous_profit_loss = int(row[1])
-        changes.append(change)
-        dates.append(row[0])
+        if previous_profit_loss is not None:
+            change = profit_loss - previous_profit_loss
+            changes.append(change)
+            dates.append(date)
 
         # Calculate the greatest increase in profits (month and amount)
-        if change > greatest_increase[1]:
-            greatest_increase= [row[0], change]
+            if change > greatest_increase[1]:
+                greatest_increase= [date, change]
 
         # Calculate the greatest decrease in losses (month and amount)
 
-        if change > greatest_decrease[1]:
-            greatest_decrease = [row[0], change]
+            if change < greatest_decrease[1]:
+                greatest_decrease = [date, change]
 
+        previous_profit_loss = profit_loss
 
 # Calculate the average net change across the months
-
-average_change = sum(changes)/ len(changes)
+if len(changes) > 0:
+    average_change = sum(changes)/ len(changes)
+else: 
+    average_change = 0
 
 # Generate the output summary
 
