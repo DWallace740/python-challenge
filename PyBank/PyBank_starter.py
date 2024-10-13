@@ -33,14 +33,12 @@ with open(file_to_load, mode="r") as financial_data:
 
     # Process each row of data
     for row in reader:
-        print(f"Processing row: {row}")
 
         date = row [0]
         profit_loss = int(row[1])
         
         # Track the total
         total_months += 1
-        print(f"Total Months updated to: {total_months}")
         total_net += profit_loss
 
         # Track the net change
