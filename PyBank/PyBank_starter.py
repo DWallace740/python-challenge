@@ -29,8 +29,6 @@ with open(file_to_load, mode="r") as financial_data:
     # Skip the header row
     header = next(reader)
 
-    # Extract first row to avoid appending to net_change_list
-
     # Process each row of data
     for row in reader:
 
@@ -79,8 +77,6 @@ f"Greatest Decrease in Profits:{greatest_decrease[0]}(${greatest_decrease[1]})\n
 # Print the output
 
 print(output)
-
-
 
 # Write the results to a text file
 with open(file_to_output, "w") as txt_file:
